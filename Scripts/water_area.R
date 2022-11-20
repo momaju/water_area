@@ -28,9 +28,20 @@ inland_waters_sa["area"][inland_waters_sa["area"] ==
 
 # Produção de pescado -----------------------------------------------------
 
+quantity_fw <- read_csv("raw/aquaculture_quantity_fw.csv") %>% 
+  clean_names() %>% 
+  rename(country = "country_name_en", "2020" = "x2020", 
+         "2019" = "x2019", "2018" = "x2018",
+         "2017" = "x2017", "2016" = "x2016") %>% 
+  select(country, '2020','2019','2018', '2017', '2016')
 
+quantity_fw["country"][quantity_fw["country"] == 
+                           "Bolivia (Plurinat.State)"] <- "Bolivia"
 
-quantity_fw <- read_csv("raw/aquaculture_quantity_fw.csv")
+quantity_fw["country"][quantity_fw["country"] == 
+                           "Venezuela (Boliv Rep of)"] <- "Venezuela"
+
+  
 
 
 
