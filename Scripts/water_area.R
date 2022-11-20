@@ -11,7 +11,10 @@ inland_waters_sa <- read_csv("raw/inland_waters11-14-2022.csv") %>%
 
 inland_2019 <- inland_waters_sa %>% 
   filter(year == 2019)
-  
+
+
+inland_2020 <- inland_waters_sa %>% 
+  filter(year == 2020)
 
 
 
