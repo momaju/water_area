@@ -8,8 +8,10 @@ library(stringr)
 inland_waters_sa <- read_csv("raw/inland_waters11-14-2022.csv") %>% 
   clean_names() %>% 
   filter(area_code %in% c(9,19,21,40,44,58,169,170,91, 236)) %>% 
-  rename(country = "area", area = "value") %>% 
-  select(country, element_code, year, area)
+  rename(country = "area", area_ha = "value") %>% 
+  select(country, element_code, year, area_ha) %>% 
+  mutate(country = str_replace(country, "XXXXX", "Bolivia (Plurinational State of)"))
+
 
 
 
