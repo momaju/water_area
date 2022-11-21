@@ -8,8 +8,8 @@ library(stringr)
 inland_waters_sa <- read_csv("raw/inland_waters11-14-2022.csv") %>% 
   clean_names() %>% 
   filter(area_code %in% c(9,19,21,40,44,58,169,170,91, 236)) %>% 
-  rename(country = "area") %>% 
-  select(country, element_code, year, value)
+  rename(country = "area", area = "value") %>% 
+  select(country, element_code, year, area)
 
 
 
@@ -28,6 +28,39 @@ inland_waters_sa["country"][inland_waters_sa["country"] ==
 inland_waters_sa["country"][inland_waters_sa["country"] == 
 "Venezuela (Bolivarian Republic of)"] <- "Venezuela"
 
+
+
+# Barplots ----------------------------------------------------------------
+
+# This is to see assert the difference in area from the different 
+# element_code
+
+inland_waters_sa %>% 
+  ggplot(aes(x = element_code, y= area, fill = country)) +
+  geom_bar(stat="identity", position=position_dodge())
+
+# Which element_code should I use?
+
+
+  
+
+
+# Grouped means by element_code -------------------------------------------
+
+
+inland_waters_sa %>% 
+  group_by(element_code) %>% 
+  summarise(area_media = mean(area))
+
+# element_code  area_media
+# <dbl>           <dbl>
+# 1 5006          1772.
+# 2 5007          2776.
+# 3 5008          2602.
+
+mean(inland_waters_sa$area)
+
+# [1] 2589.374
 
 
 
