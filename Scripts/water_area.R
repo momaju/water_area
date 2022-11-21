@@ -10,25 +10,14 @@ inland_waters_sa <- read_csv("raw/inland_waters11-14-2022.csv") %>%
   filter(area_code %in% c(9,19,21,40,44,58,169,170,91, 236)) %>% 
   rename(country = "area", area_ha = "value") %>% 
   select(country, element_code, year, area_ha) %>% 
-  mutate(country = str_replace(country, "XXXXX", "Bolivia (Plurinational State of)"))
+  mutate(country = replace(country, 
+                           country == "Bolivia (Plurinational State of)",
+                           "Bolivia")) %>% 
+  mutate(country = replace(country, 
+                           country == "Venezuela (Bolivarian Republic of)",
+                           "Venezuela"))
 
 
-
-
-inland_2020 <- inland_waters_sa %>% 
-  filter(year == 2020)
-
-
-
-# Renaming Bolívia and Venezuela --------------------------------------------------------
-
-
-
-inland_waters_sa["country"][inland_waters_sa["country"] == 
-"Bolivia (Plurinational State of)"] <- "Bolivia"
-
-inland_waters_sa["country"][inland_waters_sa["country"] == 
-"Venezuela (Bolivarian Republic of)"] <- "Venezuela"
 
 
 
@@ -38,8 +27,8 @@ inland_waters_sa["country"][inland_waters_sa["country"] ==
 # element_code
 
 inland_waters_sa %>% 
-  ggplot(aes(x = element_code, y= area, fill = country)) +
-  geom_bar(stat="identity", position=position_dodge())
+  ggplot(aes(x = element_code, y = area_ha, fill = country)) +
+  geom_bar(stat = "identity", position=position_dodge())
 
 # Which element_code should I use?
 
