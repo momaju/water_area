@@ -11,7 +11,7 @@ library(stringr)
 
 inland_waters_sa <- read_csv("raw/inland_waters11-14-2022.csv") %>% 
   clean_names() %>% 
-  filter(area_code %in% c(9,19,21,40,44,58,169,170,91, 236)) %>% 
+  filter(area_code %in% c(9,19,21,40,44,58,69,91,169,170,207,234,236)) %>% 
   rename(country = "area", area_ha = "value") %>% 
   select(country, element_code, year, area_ha) %>% 
   mutate(country = replace(country, 
@@ -35,6 +35,7 @@ inland_waters_sa %>%
   geom_bar(stat = "identity", position=position_dodge())
 
 # Which element_code should I use?
+# I will use element_code 5007 MODIS from NASA.
 
 
   
@@ -45,17 +46,17 @@ inland_waters_sa %>%
 
 inland_waters_sa %>% 
   group_by(element_code) %>% 
-  summarise(area_media = mean(area))
+  summarise(area_media = mean(area_ha))
 
 # element_code  area_media
 # <dbl>           <dbl>
-# 1 5006          1772.
-# 2 5007          2776.
-# 3 5008          2602.
+# 1 5006          1409.
+# 2 5007          2175.
+# 3 5008          2057.
 
-mean(inland_waters_sa$area)
+mean(inland_waters_sa$area_ha)
 
-# [1] 2589.374
+# [1] 2040.428
 
 
 
@@ -87,6 +88,21 @@ quantity_fw_pivoted <- quantity_fw %>%
     names_to = "yaear",
     values_to = "quantity"
   )
+
+
+
+# Inland_waters_sa by year and element_code -------------------------------
+
+inland_2020 <- inland_waters_sa %>% 
+  filter(year == 2020 & element_code == 5007)
+
+
+# Qauntity by year --------------------------------------------------------
+
+quantyty_2020 <- quantity_fw_pivoted %>% 
+  filter(yaer == '2020')
+
+
   
 
 
