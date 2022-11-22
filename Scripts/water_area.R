@@ -111,6 +111,15 @@ joined_in_qty <- inland_2020 %>%
   select(country, area_ha, quantity)
 
 
+# Graph -------------------------------------------------------------------
+
+
+joined_in_qty %>% 
+  ggplot(aes(area_ha, quantity, color = country)) +
+  geom_point(size = 4) +
+  geom_text(aes(label = country), vjust = - 0.8)
+
+
   
 
 
