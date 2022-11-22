@@ -85,7 +85,7 @@ quantity_fw <- read_csv("raw/aquaculture_quantity_fw.csv") %>%
 quantity_fw_pivoted <- quantity_fw %>% 
   pivot_longer(
     cols = '2020':'2016',
-    names_to = "yaear",
+    names_to = "year",
     values_to = "quantity"
   )
 
@@ -99,8 +99,16 @@ inland_2020 <- inland_waters_sa %>%
 
 # Qauntity by year --------------------------------------------------------
 
-quantyty_2020 <- quantity_fw_pivoted %>% 
-  filter(yaer == '2020')
+quantity_2020 <- quantity_fw_pivoted %>% 
+  filter(year == "2020")
+
+
+# Joining the dataframes --------------------------------------------------
+
+joined_in_qty <- inland_2020 %>% 
+  inner_join(quantity_2020, 
+             by = "country") %>% 
+  select(country, area_ha, quantity)
 
 
   
