@@ -112,22 +112,44 @@ quantity_2020 <- quantity_fw_pivoted %>%
 joined_in_qty <- inland_2020 %>% 
   inner_join(quantity_2020, 
              by = "country") %>% 
-  select(country, area_ha, quantity)
+  mutate(produtividade = (quantity/(area_ha*1000))*1000) %>% 
+  select(country, area_ha, quantity, produtividade)
 
 
 # Graph -------------------------------------------------------------------
 
 joined_in_qty %>% 
   ggplot(aes(area_ha, quantity, size = quantity, color = country)) +
-  geom_point(alpha = 0.7) +
+  geom_point(alpha = 0.5) +
   geom_text(aes(label = country), size = 4, vjust = - 4)+
   expand_limits(x=0, y=0) +
   scale_y_continuous(labels = scales::label_comma(big.mark = ".", decimal.mark = ","), limits = c(0, 750000)) +
   scale_x_continuous(labels = scales::label_comma(big.mark = ".", decimal.mark = ","), limits = c(0, 15000)) +
-  scale_size(range = c(20, 80)) +
+  scale_size(range = c(10, 80)) +
+  labs(title = "Produção da Aquicultura Em Águas Interiores na América do Sul",
+       y = "Toneladas",
+       x = "Área (1.000 Hectares)") +
   theme_light() +
   theme(legend.position = "none") 
 
+
+
+# Gráfico de peodutividade ------------------------------------------------
+
+
+joined_in_qty %>% 
+  ggplot(aes(area_ha, produtividade, size = produtividade, color = country)) +
+  geom_point(alpha = 0.5) +
+  geom_text(aes(label = country), size = 4, vjust = - 3)+
+  expand_limits(x=0, y=0) +
+  scale_y_continuous(labels = scales::label_comma(big.mark = ".", decimal.mark = ","), limits = c(0, 150)) +
+  scale_x_continuous(labels = scales::label_comma(big.mark = ".", decimal.mark = ","), limits = c(0, 15000)) +
+  scale_size(range = c(4, 28)) +
+  labs(title = "Produção da Aquicultura Em Águas Interiores na América do Sul",
+       y = "Kg/Ha",
+       x = "Área (1.000 Hectares)") +
+  theme_light() +
+  theme(legend.position = "none") 
 
   
 
