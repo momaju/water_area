@@ -120,9 +120,13 @@ joined_in_qty <- inland_2020 %>%
 joined_in_qty %>% 
   ggplot(aes(area_ha, quantity, size = quantity, color = country)) +
   geom_point(alpha = 0.7) +
-  geom_text(aes(label = country), vjust = - 0.8)+
-  scale_size(range = c(.20, 20)) +
-  theme(legend.position = "none")
+  geom_text(aes(label = country), size = 4, vjust = - 4)+
+  expand_limits(x=0, y=0) +
+  scale_y_continuous(labels = scales::label_comma(big.mark = ".", decimal.mark = ","), limits = c(0, 750000)) +
+  scale_x_continuous(labels = scales::label_comma(big.mark = ".", decimal.mark = ","), limits = c(0, 15000)) +
+  scale_size(range = c(20, 80)) +
+  theme_light() +
+  theme(legend.position = "none") 
 
 
   
