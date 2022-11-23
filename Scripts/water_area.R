@@ -117,12 +117,12 @@ joined_in_qty <- inland_2020 %>%
 
 # Graph -------------------------------------------------------------------
 
-
 joined_in_qty %>% 
-  ggplot(aes(area_ha, quantity,color = country)) +
+  ggplot(aes(area_ha, quantity, size = quantity, color = country)) +
   geom_point(alpha = 0.7) +
-  geom_text(aes(label = country), vjust = - 0.8)
-  #scale_size(range = c(.1, 100))
+  geom_text(aes(label = country), vjust = - 0.8)+
+  scale_size(range = c(.20, 20)) +
+  theme(legend.position = "none")
 
 
   
