@@ -1,10 +1,14 @@
+
+
 library(tidyverse)
 library(janitor)
 library(stringr)
 
 # Os dados originais foram obtidos da FAO:
 # 1 https://www.fao.org/faostat/en/#search/water, Dodos do arquivo inland waters.
+  #Areas values are in 1000 ha (hectares)
 # 2 https://www.fao.org/fishery/statistics-query/en/aquaculture/aquaculture_quantity
+  # Tonnes - live weight
 
 
 #South America only
@@ -115,9 +119,10 @@ joined_in_qty <- inland_2020 %>%
 
 
 joined_in_qty %>% 
-  ggplot(aes(area_ha, quantity, color = country)) +
-  geom_point(size = 4) +
+  ggplot(aes(area_ha, quantity,color = country)) +
+  geom_point(alpha = 0.7) +
   geom_text(aes(label = country), vjust = - 0.8)
+  #scale_size(range = c(.1, 100))
 
 
   
