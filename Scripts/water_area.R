@@ -6,6 +6,7 @@ library(stringr)
 library(countrycode)
 library(ggimage)
 
+
 # Os dados originais foram obtidos da FAO:
 # 1 https://www.fao.org/faostat/en/#search/water, Dodos do arquivo inland waters.
   #Areas values are in 1000 ha (hectares)
@@ -167,7 +168,9 @@ joined_in_qty %>%
  joined_in_qty %>% 
   ggplot(aes(x = reorder(country, produtividade), y = produtividade, fill = country)) + 
   #geom_flag(y = -50, aes(image = iso2))  +
-  geom_bar(stat = "identity") + 
+  geom_bar(stat = "identity") +
+  geom_flag(y = -10, aes(image = iso2))  +
+  lims(y = c(-8, 125)) +
   labs(title = "Produtividade da Aquicultura em Relação as Áreas de Águas Interiores ",
        subtitle = "Source: FAO, 2020 ",
        x = "Country",
@@ -175,7 +178,7 @@ joined_in_qty %>%
   coord_flip() +
   theme_light() +
   theme(legend.position = "none")
-  
+
 
   
 
