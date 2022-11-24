@@ -3,6 +3,8 @@
 library(tidyverse)
 library(janitor)
 library(stringr)
+library(countrycode)
+library(ggimage)
 
 # Os dados originais foram obtidos da FAO:
 # 1 https://www.fao.org/faostat/en/#search/water, Dodos do arquivo inland waters.
@@ -26,8 +28,16 @@ inland_waters_sa <- read_csv("raw/inland_waters11-14-2022.csv") %>%
                            "Venezuela"))
 
 
+# Adding countrycodes -----------------------------------------------------
 
 
+inland_waters_sa$iso2 <- countrycode(sourcevar =  inland_waters_sa$country,
+                                     destination = "iso2c", origin  = "country.name")
+
+
+
+
+                        
 
 # Barplots ----------------------------------------------------------------
 
@@ -113,7 +123,7 @@ joined_in_qty <- inland_2020 %>%
   inner_join(quantity_2020, 
              by = "country") %>% 
   mutate(produtividade = (quantity/(area_ha*1000))*1000) %>% 
-  select(country, area_ha, quantity, produtividade)
+  select(country, area_ha, quantity, produtividade, iso2)
 
 
 # Graph -------------------------------------------------------------------
@@ -150,6 +160,22 @@ joined_in_qty %>%
        x = "Área (1.000 Hectares)") +
   theme_light() +
   theme(legend.position = "none") 
+
+
+
+# Barplot with flags ------------------------------------------------------
+ joined_in_qty %>% 
+  ggplot(aes(x = reorder(country, produtividade), y = produtividade, fill = country)) + 
+  #geom_flag(y = -50, aes(image = iso2))  +
+  geom_bar(stat = "identity") + 
+  labs(title = "Produtividade da Aquicultura em Relação as Áreas de Águas Interiores ",
+       subtitle = "Source: FAO, 2020 ",
+       x = "Country",
+       y = "Produtividade") +
+  coord_flip() +
+  theme_light() +
+  theme(legend.position = "none")
+  
 
   
 
