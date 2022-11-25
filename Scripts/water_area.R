@@ -5,6 +5,7 @@ library(janitor)
 library(stringr)
 library(countrycode)
 library(ggimage)
+library(ggtext)
 
 
 # Os dados originais foram obtidos da FAO:
@@ -16,6 +17,11 @@ library(ggimage)
 
 
 #South America only
+
+#As águas interiores podem ser usadas para se referir a lagos, rios, riachos, 
+#córregos, lagoas, canais interiores, represas e outras águas sem litoral 
+#(geralmente de água doce) (como o Mar Cáspio, Mar de Aral, etc.).
+
 
 inland_waters_sa <- read_csv("raw/inland_waters11-14-2022.csv") %>% 
   clean_names() %>% 
@@ -124,7 +130,7 @@ quantity_2020 <- quantity_fw_pivoted %>%
 joined_in_qty <- inland_2020 %>% 
   inner_join(quantity_2020, 
              by = "country") %>% 
-  mutate(produtividade = (quantity/(area_ha*1000))*1000) %>% 
+  mutate(produtividade = (quantity/(area_ha))) %>% 
   select(country, area_ha, quantity, produtividade, iso2)
 
 
@@ -174,7 +180,9 @@ joined_in_qty %>%
 
 
 # Barplot with flags ------------------------------------------------------
- joined_in_qty %>% 
+ 
+
+joined_in_qty %>% 
   ggplot(aes(x = reorder(country, produtividade), y = produtividade, 
              fill = country)) + 
   geom_bar(stat = "identity") +
@@ -184,17 +192,21 @@ joined_in_qty %>%
                                "#17BECF","#FFBB78","#FFBB78")) +
   geom_flag(y = -10, aes(image = iso2))  +
   lims(y = c(-8, 125)) +
-  labs(title = "Produtividade da Aquicultura em Relação as Áreas de Águas
-       Interiores ",
-       subtitle = "Source: FAO, 2020 ",
-       x = "Country",
-       y = "Produtividade") +
+  labs(title =  "<span style = 'color: #009c39;'>O Brasil</span> Ainda Tem 
+       Muita Água para Crescer",
+       subtitle = "Aquicultura de Águas Interiores em Relação\na Superfície Total Existente (em 1.000ha)",
+       x = "",
+       y = "Produtividade\n(kg/ha)",
+       caption = "FAO, 2020") +
   coord_flip() +
   theme_light() +
   theme(legend.position = "none",
-        panel.background = element_rect(fill = "#1B1919"),
+        panel.background = element_rect(fill = "white"),
+        panel.border = element_blank(),
         panel.grid.major = element_blank(),
-        panel.grid.minor = element_blank())
+        panel.grid.minor = element_blank(),
+        plot.caption = element_text(colour = "gray60"),
+        plot.title = element_markdown())
 
 
   
