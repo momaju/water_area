@@ -6,6 +6,8 @@ library(stringr)
 library(countrycode)
 library(ggimage)
 library(ggtext)
+library(png)
+library(patchwork)
 
 
 # Os dados originais foram obtidos da FAO:
@@ -179,8 +181,9 @@ joined_in_qty %>%
 
 
 
-# Barplot with flags ------------------------------------------------------
+# Barplot with flags and image ------------------------------------------------------
  
+my_image <- readPNG("G:/My Drive/RWork/Projects/water_area/images/fish_icon.png", native = TRUE)
 
 joined_in_qty %>% 
   ggplot(aes(x = reorder(country, produtividade), y = produtividade, 
@@ -192,13 +195,14 @@ joined_in_qty %>%
                                "#17BECF","#FFBB78","#FFBB78")) +
   geom_flag(y = -10, aes(image = iso2))  +
   lims(y = c(-8, 125)) +
-  labs(title =  "<span style = 'color: #009c39;'>O Brasil</span> Ainda Tem 
+  labs(title =  "<span style = 'color: #009c39;'>O Brasil</span> Ainda Tem <br>
        Muita Água para Crescer",
        subtitle = "Aquicultura de Águas Interiores em Relação\na Superfície Total Existente (em 1.000ha)",
        x = "",
-       y = "Produtividade\n(kg/ha)",
+       y = "",
        caption = "FAO, 2020") +
   coord_flip() +
+  geom_text(aes(label = round(produtividade,2)), hjust = -0.2, fontface = "bold") +
   theme_light() +
   theme(legend.position = "none",
         panel.background = element_rect(fill = "white"),
@@ -206,7 +210,13 @@ joined_in_qty %>%
         panel.grid.major = element_blank(),
         panel.grid.minor = element_blank(),
         plot.caption = element_text(colour = "gray60"),
-        plot.title = element_markdown())
+        plot.title = element_markdown(size = 25, face = "bold"),
+        axis.text.x =  element_blank()) +
+  inset_element(p = my_image,
+                left = 0.3,
+                bottom = 0.55,
+                right = 0.95,
+                top = 0.1)
 
 
   
