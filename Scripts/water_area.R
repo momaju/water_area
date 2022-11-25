@@ -191,7 +191,10 @@ joined_in_qty %>%
        y = "Produtividade") +
   coord_flip() +
   theme_light() +
-  theme(legend.position = "none")
+  theme(legend.position = "none",
+        panel.background = element_rect(fill = "#1B1919"),
+        panel.grid.major = element_blank(),
+        panel.grid.minor = element_blank())
 
 
   
