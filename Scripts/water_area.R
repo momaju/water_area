@@ -8,7 +8,8 @@ library(ggimage)
 
 
 # Os dados originais foram obtidos da FAO:
-# 1 https://www.fao.org/faostat/en/#search/water, Dodos do arquivo inland waters.
+# 1 https://www.fao.org/faostat/en/#search/water, 
+#  Dados do arquivo inland waters.
   #Areas values are in 1000 ha (hectares)
 # 2 https://www.fao.org/fishery/statistics-query/en/aquaculture/aquaculture_quantity
   # Tonnes - live weight
@@ -134,8 +135,12 @@ joined_in_qty %>%
   geom_point(alpha = 0.5) +
   geom_text(aes(label = country), size = 4, vjust = - 4)+
   expand_limits(x=0, y=0) +
-  scale_y_continuous(labels = scales::label_comma(big.mark = ".", decimal.mark = ","), limits = c(0, 750000)) +
-  scale_x_continuous(labels = scales::label_comma(big.mark = ".", decimal.mark = ","), limits = c(0, 15000)) +
+  scale_y_continuous(labels = scales::label_comma(big.mark = ".", 
+                                                  decimal.mark = ","), 
+                     limits = c(0, 750000)) +
+  scale_x_continuous(labels = scales::label_comma(big.mark = ".", 
+                                                  decimal.mark = ","), 
+                     limits = c(0, 15000)) +
   scale_size(range = c(10, 80)) +
   labs(title = "Produção da Aquicultura Em Águas Interiores na América do Sul",
        y = "Toneladas",
@@ -153,8 +158,12 @@ joined_in_qty %>%
   geom_point(alpha = 0.5) +
   geom_text(aes(label = country), size = 4, vjust = - 3)+
   expand_limits(x=0, y=0) +
-  scale_y_continuous(labels = scales::label_comma(big.mark = ".", decimal.mark = ","), limits = c(0, 150)) +
-  scale_x_continuous(labels = scales::label_comma(big.mark = ".", decimal.mark = ","), limits = c(0, 15000)) +
+  scale_y_continuous(labels = scales::label_comma(big.mark = ".", 
+                                                  decimal.mark = ","), 
+                     limits = c(0, 150)) +
+  scale_x_continuous(labels = scales::label_comma(big.mark = ".", 
+                                                  decimal.mark = ","), 
+                     limits = c(0, 15000)) +
   scale_size(range = c(4, 28)) +
   labs(title = "Produção da Aquicultura Em Águas Interiores na América do Sul",
        y = "Kg/Ha",
@@ -166,12 +175,17 @@ joined_in_qty %>%
 
 # Barplot with flags ------------------------------------------------------
  joined_in_qty %>% 
-  ggplot(aes(x = reorder(country, produtividade), y = produtividade, fill = country)) + 
-  #geom_flag(y = -50, aes(image = iso2))  +
+  ggplot(aes(x = reorder(country, produtividade), y = produtividade, 
+             fill = country)) + 
   geom_bar(stat = "identity") +
+  scale_fill_manual(values = c("#1F77B4","#FF7F0E","#009c39", 
+                               "#D62728","#9467BD","#8C564B",
+                               "#7F7F7F","#BCBD22","#17BECF",
+                               "#17BECF","#FFBB78","#FFBB78")) +
   geom_flag(y = -10, aes(image = iso2))  +
   lims(y = c(-8, 125)) +
-  labs(title = "Produtividade da Aquicultura em Relação as Áreas de Águas Interiores ",
+  labs(title = "Produtividade da Aquicultura em Relação as Áreas de Águas
+       Interiores ",
        subtitle = "Source: FAO, 2020 ",
        x = "Country",
        y = "Produtividade") +
