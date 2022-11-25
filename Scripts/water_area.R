@@ -8,6 +8,7 @@ library(ggimage)
 library(ggtext)
 library(png)
 library(patchwork)
+library(ggflags)
 
 
 # Os dados originais foram obtidos da FAO:
@@ -38,11 +39,13 @@ inland_waters_sa <- read_csv("raw/inland_waters11-14-2022.csv") %>%
                            "Venezuela"))
 
 
-# Adding countrycodes -----------------------------------------------------
+# Adding countrycodes -------------------------------------------------------
+# Requires package countrycode
 
 
 inland_waters_sa$iso2 <- countrycode(sourcevar =  inland_waters_sa$country,
-                                     destination = "iso2c", origin  = "country.name")
+                                     destination = "iso2c", 
+                                     origin  = "country.name")
 
 
 
@@ -136,7 +139,7 @@ joined_in_qty <- inland_2020 %>%
   select(country, area_ha, quantity, produtividade, iso2)
 
 
-# Graph -------------------------------------------------------------------
+# Bubble Graph --------------------------------------------------------------
 
 joined_in_qty %>% 
   ggplot(aes(area_ha, quantity, size = quantity, color = country)) +
@@ -181,9 +184,10 @@ joined_in_qty %>%
 
 
 
-# Barplot with flags and image ------------------------------------------------------
+# Barplot with flags and image -----------------------------------------------
  
-my_image <- readPNG("G:/My Drive/RWork/Projects/water_area/images/fish_icon.png", native = TRUE)
+my_image <- readPNG("G:/My Drive/RWork/Projects/water_area/images/fish_icon.png", 
+                    native = TRUE)
 
 joined_in_qty %>% 
   ggplot(aes(x = reorder(country, produtividade), y = produtividade, 
@@ -202,7 +206,8 @@ joined_in_qty %>%
        y = "",
        caption = "FAO, 2020") +
   coord_flip() +
-  geom_text(aes(label = round(produtividade,2)), hjust = -0.2, fontface = "bold") +
+  geom_text(aes(label = round(produtividade,2)), hjust = -0.2, 
+            fontface = "bold") +
   theme_light() +
   theme(legend.position = "none",
         panel.background = element_rect(fill = "white"),
@@ -211,15 +216,98 @@ joined_in_qty %>%
         panel.grid.minor = element_blank(),
         plot.caption = element_text(colour = "gray60"),
         plot.title = element_markdown(size = 25, face = "bold"),
-        axis.text.x =  element_blank()) +
+        axis.text.x =  element_blank(),
+        axis.text.y = element_text(size = 15)) +
   inset_element(p = my_image,
                 left = 0.3,
                 bottom = 0.55,
                 right = 0.95,
                 top = 0.1)
 
+# Same plot with different colors -----------------------------------------
+
+my_image <- readPNG("G:/My Drive/RWork/Projects/water_area/images/fish_icon.png", 
+                    native = TRUE)
+
+joined_in_qty %>% 
+  ggplot(aes(x = reorder(country, produtividade), y = produtividade, 
+             fill = country)) + 
+  geom_bar(stat = "identity") +
+  scale_fill_manual(values = c("#2e98fe","#2e98fe","#009c39", 
+                               "#2e98fe","#2e98fe","#2e98fe",
+                               "#2e98fe","#2e98fe","#2e98fe",
+                               "#2e98fe","#2e98fe","#2e98fe")) +
+  geom_flag(y = -10, aes(image = iso2))  +
+  lims(y = c(-8, 125)) +
+  labs(title =  "<span style = 'color: #009c39;'>O Brasil</span> Ainda Tem <br>
+       Muita Água para Crescer",
+       subtitle = "Aquicultura de Águas Interiores em Relação\na Superfície Total Existente (em 1.000ha)",
+       x = "",
+       y = "",
+       caption = "FAO, 2020") +
+  coord_flip() +
+  geom_text(aes(label = round(produtividade,2)), hjust = -0.2, 
+            fontface = "bold") +
+  theme_light() +
+  theme(legend.position = "none",
+        panel.background = element_rect(fill = "white"),
+        panel.border = element_blank(),
+        panel.grid.major = element_blank(),
+        panel.grid.minor = element_blank(),
+        plot.caption = element_text(colour = "gray60"),
+        plot.title = element_markdown(size = 25, face = "bold"),
+        axis.text.x =  element_blank(),
+        axis.text.y = element_text(size = 15)) +
+  inset_element(p = my_image,
+                left = 0.3,
+                bottom = 0.55,
+                right = 0.95,
+                top = 0.1)
 
   
+
+# Round Flags -------------------------------------------------------------
+# Requires package ggflags
+
+my_image <- readPNG("G:/My Drive/RWork/Projects/water_area/images/fish_icon.png", 
+                    native = TRUE)
+
+joined_in_qty %>% 
+  # The geom_flag() function needs iso2c country codes in lower case format,
+  mutate(iso2 = tolower(iso2)) %>% 
+  ggplot(aes(x = reorder(country, produtividade), y = produtividade, 
+             fill = country)) + 
+  geom_bar(stat = "identity") +
+  scale_fill_manual(values = c("#2e98fe","#2e98fe","#009c39", 
+                               "#2e98fe","#2e98fe","#2e98fe",
+                               "#2e98fe","#2e98fe","#2e98fe",
+                               "#2e98fe","#2e98fe","#2e98fe")) +
+  geom_flag(y = -5, aes(country = iso2), size = 15)  +
+  lims(y = c(-8, 125)) +
+  labs(title =  "<span style = 'color: #009c39;'>O Brasil</span> Ainda Tem <br>
+       Muita Água para Crescer",
+       subtitle = "Aquicultura Continental Levando-se em Conta\na Superfície Total de Águas Interiores(em 1.000ha)",
+       x = "",
+       y = "",
+       caption = "FAO, 2020") +
+  coord_flip() +
+  geom_text(aes(label = round(produtividade,2)), hjust = -0.2, 
+            fontface = "bold") +
+  theme_light() +
+  theme(legend.position = "none",
+        panel.background = element_rect(fill = "white"),
+        panel.border = element_blank(),
+        panel.grid.major = element_blank(),
+        panel.grid.minor = element_blank(),
+        plot.caption = element_text(colour = "gray60"),
+        plot.title = element_markdown(size = 25, face = "bold"),
+        axis.text.x =  element_blank(),
+        axis.text.y = element_text(size = 15)) 
+  inset_element(p = my_image,
+                left = 0.3,
+                bottom = 0.55,
+                right = 0.95,
+                top = 0.1)
 
 
 
