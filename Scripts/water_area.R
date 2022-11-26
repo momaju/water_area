@@ -295,14 +295,14 @@ joined_in_qty %>%
   lims(y = c(-8, 125)) +
   labs(title =  "<span style = 'color: #009c39;'>O Brasil</span> Ainda Tem
        Muita Água para Crescer",
-       subtitle = "Aquicultura Continental Levando-se em Conta 
-       a Superfície Total de Águas Interiores(em 1.000ha)",
+       subtitle = "Produtividade da aquicultura continental, em t/1.000 ha levando-se em conta 
+a Superfície total de águas interiores em cada país.",
        x = "",
        y = "",
        caption = "FAO, 2020") +
   coord_flip() +
   geom_text(aes(label = round(produtividade,2)), hjust = -0.2, 
-            fontface = "bold") +
+            fontface = "bold", size = 5) +
   theme_light() +
   theme(legend.position = "none",
         panel.background = element_rect(fill = "white"),
@@ -310,8 +310,9 @@ joined_in_qty %>%
         panel.grid.major = element_blank(),
         panel.grid.minor = element_blank(),
         plot.caption = element_text(colour = "gray60"),
-        plot.title = element_markdown(size = 25, face = "bold",
+        plot.title = element_markdown(size = 30, face = "bold",
                                       family = "oxygen"),
+        plot.subtitle = element_text(size = 15),
         axis.text.x =  element_blank(),
         axis.text.y = element_text(size = 15)) +
   inset_element(p = my_image,
