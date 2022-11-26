@@ -296,7 +296,7 @@ joined_in_qty %>%
   labs(title =  "<span style = 'color: #009c39;'>O Brasil</span> Ainda Tem
        Muita Água para Crescer",
        subtitle = "Produtividade da aquicultura continental, em t/1.000 ha levando-se em conta 
-a Superfície total de águas interiores em cada país.",
+a superfície total de águas interiores em cada país.",
        x = "",
        y = "",
        caption = "FAO, 2020") +
