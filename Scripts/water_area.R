@@ -194,6 +194,8 @@ joined_in_qty %>%
 
 
 # Barplot with flags and image -----------------------------------------------
+# flags are from ggimage package
+
  
 my_image <- readPNG("G:/My Drive/RWork/Projects/water_area/images/fish_icon.png", 
                     native = TRUE)
@@ -234,6 +236,7 @@ joined_in_qty %>%
                 top = 0.1)
 
 # Same plot with different colors -----------------------------------------
+# # flags are from ggimage package
 
 my_image <- readPNG("G:/My Drive/RWork/Projects/water_area/images/fish_icon.png", 
                     native = TRUE)
