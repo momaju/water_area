@@ -9,6 +9,7 @@ library(ggtext)
 library(png)
 library(patchwork)
 library(ggflags)
+library(showtext)
 
 
 # Os dados originais foram obtidos da FAO:
@@ -139,6 +140,14 @@ joined_in_qty <- inland_2020 %>%
   select(country, area_ha, quantity, produtividade, iso2)
 
 
+
+# Adding fonts ------------------------------------------------------------
+
+font_add_google(name = "Oxygen",
+                family = "oxygen")
+showtext_auto()
+
+
 # Bubble Graph --------------------------------------------------------------
 
 joined_in_qty %>% 
@@ -197,7 +206,7 @@ joined_in_qty %>%
                                "#D62728","#9467BD","#8C564B",
                                "#7F7F7F","#BCBD22","#17BECF",
                                "#17BECF","#FFBB78","#FFBB78")) +
-  geom_flag(y = -10, aes(image = iso2))  +
+  ggimage::geom_flag(y = -10, aes(image = iso2))  +
   lims(y = c(-8, 125)) +
   labs(title =  "<span style = 'color: #009c39;'>O Brasil</span> Ainda Tem <br>
        Muita Água para Crescer",
@@ -237,7 +246,7 @@ joined_in_qty %>%
                                "#2e98fe","#2e98fe","#2e98fe",
                                "#2e98fe","#2e98fe","#2e98fe",
                                "#2e98fe","#2e98fe","#2e98fe")) +
-  geom_flag(y = -10, aes(image = iso2))  +
+  ggimage::geom_flag(y = -10, aes(image = iso2))  +
   lims(y = c(-8, 125)) +
   labs(title =  "<span style = 'color: #009c39;'>O Brasil</span> Ainda Tem <br>
        Muita Água para Crescer",
@@ -284,9 +293,10 @@ joined_in_qty %>%
                                "#2e98fe","#2e98fe","#2e98fe")) +
   geom_flag(y = -5, aes(country = iso2), size = 15)  +
   lims(y = c(-8, 125)) +
-  labs(title =  "<span style = 'color: #009c39;'>O Brasil</span> Ainda Tem <br>
+  labs(title =  "<span style = 'color: #009c39;'>O Brasil</span> Ainda Tem
        Muita Água para Crescer",
-       subtitle = "Aquicultura Continental Levando-se em Conta\na Superfície Total de Águas Interiores(em 1.000ha)",
+       subtitle = "Aquicultura Continental Levando-se em Conta 
+       a Superfície Total de Águas Interiores(em 1.000ha)",
        x = "",
        y = "",
        caption = "FAO, 2020") +
@@ -300,9 +310,10 @@ joined_in_qty %>%
         panel.grid.major = element_blank(),
         panel.grid.minor = element_blank(),
         plot.caption = element_text(colour = "gray60"),
-        plot.title = element_markdown(size = 25, face = "bold"),
+        plot.title = element_markdown(size = 25, face = "bold",
+                                      family = "oxygen"),
         axis.text.x =  element_blank(),
-        axis.text.y = element_text(size = 15)) 
+        axis.text.y = element_text(size = 15)) +
   inset_element(p = my_image,
                 left = 0.3,
                 bottom = 0.55,
