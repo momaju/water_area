@@ -325,6 +325,61 @@ a superfície total de águas interiores em cada país.",
                 top = 0.1)
 
 
+# Try to get the image from the web ---------------------------------------
+#
+#Did not work yet
+#
+library(RCurl)
+library(googledrive)
+
+
+imageurl <- "https://iconduck.com/icons/176201/religion-christianity-religion-jesus-christianity-christ-fish-culture?shared"
+
+#my_image <- readPNG("G:/My Drive/RWork/Projects/water_area/images/fish_icon.png", 
+#                    native = TRUE)
+
+my_image <-  readPNG(getURLContent(imageurl))
+
+joined_in_qty %>% 
+  # The geom_flag() function needs iso2c country codes in lower case format,
+  mutate(iso2 = tolower(iso2)) %>% 
+  ggplot(aes(x = reorder(country, produtividade), y = produtividade, 
+             fill = country)) + 
+  geom_bar(stat = "identity") +
+  scale_fill_manual(values = c("#2e98fe","#2e98fe","#009c39", 
+                               "#2e98fe","#2e98fe","#2e98fe",
+                               "#2e98fe","#2e98fe","#2e98fe",
+                               "#2e98fe","#2e98fe","#2e98fe")) +
+  geom_flag(y = -5, aes(country = iso2), size = 15)  +
+  lims(y = c(-8, 125)) +
+  labs(title =  "<span style = 'color: #009c39;'>O Brasil</span> Ainda Tem
+       Muita Água para Crescer",
+       subtitle = "Produtividade da aquicultura continental, em t/1.000 ha levando-se em conta 
+a superfície total de águas interiores em cada país.",
+       x = "",
+       y = "",
+       caption = "FAO, 2020") +
+  coord_flip() +
+  geom_text(aes(label = round(produtividade,2)), hjust = -0.2, 
+            fontface = "bold", size = 5) +
+  theme_light() +
+  theme(legend.position = "none",
+        panel.background = element_rect(fill = "white"),
+        panel.border = element_blank(),
+        panel.grid.major = element_blank(),
+        panel.grid.minor = element_blank(),
+        plot.caption = element_text(colour = "gray60"),
+        plot.title = element_markdown(size = 30, face = "bold",
+                                      family = "oxygen"),
+        plot.subtitle = element_text(size = 15),
+        axis.text.x =  element_blank(),
+        axis.text.y = element_text(size = 15)) +
+  inset_element(p = my_image,
+                left = 0.3,
+                bottom = 0.55,
+                right = 0.95,
+                top = 0.1)
+
 
 
 
