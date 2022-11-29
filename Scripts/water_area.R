@@ -333,12 +333,12 @@ library(RCurl)
 library(googledrive)
 
 
-imageurl <- "https://iconduck.com/icons/176201/religion-christianity-religion-jesus-christianity-christ-fish-culture?shared"
+imageurl <- "https://icons.veryicon.com/png/o/healthcate-medical/healthy/fish-109.png"
 
 #my_image <- readPNG("G:/My Drive/RWork/Projects/water_area/images/fish_icon.png", 
 #                    native = TRUE)
 
-my_image <-  readPNG(getURLContent(imageurl))
+my_image <-  readPNG(getURLContent(imageurl), native = TRUE)
 
 joined_in_qty %>% 
   # The geom_flag() function needs iso2c country codes in lower case format,
